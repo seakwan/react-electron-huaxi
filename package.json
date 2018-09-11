@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "anyproxy": "v3.10.3",
     "superagent": "^3.8.3",
     "superagent-proxy": "^2.0.0"
   },

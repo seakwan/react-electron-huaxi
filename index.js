@@ -1,6 +1,12 @@
 const { districtList, getDoctorList } = require('./request');
+require('./proxy');
 
-getDoctorList(1, 2, 3).then(body => {
-    console.log(body);
-});
+const store = require('./store');
 
+
+setInterval(() => {
+    if (store.has('cookie')) {
+        console.log('--------------------------------');
+        console.log(store.get('cookie'));
+    }
+}, 5000);
