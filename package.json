@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "superagent": "^3.8.3"
-  }
+    "superagent": "^3.8.3",
+    "superagent-proxy": "^2.0.0"
+  },
+  "devDependencies": {}
 }
