@@ -12,26 +12,26 @@ function createWindow() {
         {
             width: 800,
             height: 600,
-            webPreferences: {
-                javascript: true,
-                plugins: true,
-                nodeIntegration: false, // 不集成 Nodejs
-                webSecurity: false,
-                preload: path.join(__dirname, './renderer.js') // 但预加载的 js 文件内仍可以使用 Nodejs 的 API
-            }
         })
     let startUrl = '';
-    if (process.env.ELECTRON_START_URL) {
-        startUrl = process.env.ELECTRON_START_URL;
-        win.webContents.openDevTools();
-    }
-    else {
-        startUrl = url.format({
-            pathname: path.join(__dirname, './build/index.html'),
-            protocol: 'file:',
-            slashes: true
-        });
-    }
+    // if (process.env.ELECTRON_START_URL) {
+    //     startUrl = process.env.ELECTRON_START_URL;
+    //     win.webContents.openDevTools();
+    // }
+    // else {
+    //     startUrl = url.format({
+    //         pathname: path.join(__dirname, './build/index.html'),
+    //         protocol: 'file:',
+    //         slashes: true
+    //     });
+    // }
+
+    startUrl = url.format({
+        pathname: path.join(__dirname, './public/index.html'),
+        protocol: 'file:',
+        slashes: true
+    });
+
     win.loadURL(startUrl);
 
     // 当 window 被关闭，这个事件会被触发。

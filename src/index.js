@@ -23,8 +23,8 @@ export class App extends Component {
     }
 
     render() {
-        // const electron = window.electron;
-        // console.log(electron);
+        const electron = window.electron;
+        console.log(electron);
 
         //console.log(window.require('remote').getGlobal('sharedObject').someProperty);
 

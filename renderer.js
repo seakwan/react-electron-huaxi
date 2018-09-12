@@ -1,25 +1,12 @@
-// (function () {
-//     const electron = require('electron');
-//     // const ipcRenderer = electron.ipcRenderer;
-//     const remote = electron.remote;
-//     const a = remote.require('../api');
-//     console.log(a);
-//     // const setting = remote.require('./setting.json');
+(function () {
+    const electron = require('electron');
+    const ipcRenderer = electron.ipcRenderer;
+    const remote = electron.remote;
+    const anyproxy = remote.require('./anyproxy');
 
-//     // //only explose these variable
-//     // global.remoteApi = remoteApi;
-//     // global.ipcRenderer = ipcRenderer;
-//     // global.setting = setting;
-//     global.electron = electron;
-//     console.log('1234')
-// })();
+    //only explose these variable
+    global.anyproxy = anyproxy;
+    global.ipcRenderer = ipcRenderer;
 
-// require('./src/proxy');
 
-// const a = require('./src/api');
-
-// console.log(a);
-
-// global.sharedObject = {
-//     someProperty: 'default value'
-// };
+})()

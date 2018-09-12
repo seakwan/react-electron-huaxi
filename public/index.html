@@ -7,9 +7,17 @@
 </head>
 
 <body>
-    <!-- <script src="renderer.js"></script> -->
-    <!-- <script>require('./renderer.js')</script> -->
-    <div id="root"></div>
+    <script src="../renderer.js"></script>
+    <div id="root">
+        <button onclick="handleClick()">start</button>
+        <h1>haha</h1>
+    </div>
+    <script>
+        function handleClick() {
+            const anyproxy = window.anyproxy;
+            anyproxy.start();
+        }
+    </script>
 </body>
 
-</html>;
+</html>

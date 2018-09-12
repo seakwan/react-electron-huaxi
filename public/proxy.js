@@ -18,6 +18,12 @@ const proxyServer = new proxy.ProxyServer(options);
 
 proxyServer.on('ready', () => { /* */ });
 proxyServer.on('error', (e) => { /* */ });
-proxyServer.start();
 
-module.exports = proxyServer;
+
+function start() {
+    proxyServer.start();
+}
+
+module.exports = {
+    start: start
+}
