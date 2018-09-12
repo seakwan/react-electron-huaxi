@@ -3,7 +3,6 @@ require('./proxy');
 
 const store = require('./store');
 
-
 setInterval(() => {
     if (store.has('cookie')) {
         console.log('--------------------------------');
