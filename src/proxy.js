@@ -1,5 +1,7 @@
 const proxy = require("anyproxy");
 
+console.log('proxy')
+
 const options = {
     port: 8001,
     rule: require('./ruleModule'),

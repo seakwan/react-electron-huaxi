@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "estart": "electron .",
+    "estart": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "ebuild": "electron-packager . app --darwin --out presenterTool --arch=x64 --overwrite --ignore=node_modulesls --electron-version=1.8.2"
   },
   "keywords": [],

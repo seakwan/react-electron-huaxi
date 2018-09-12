@@ -8,6 +8,7 @@ module.exports = {
             if (Cookie) {
                 if (!store.has('cookie')) {
                     store.set('cookie', Cookie);
+                    
                 }
             }
         }

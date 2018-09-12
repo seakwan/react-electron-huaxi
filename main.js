@@ -17,21 +17,22 @@ function createWindow() {
                 plugins: true,
                 nodeIntegration: false, // 不集成 Nodejs
                 webSecurity: false,
-                preload: path.join(__dirname, './public/renderer.js') // 但预加载的 js 文件内仍可以使用 Nodejs 的 API
+                preload: path.join(__dirname, './renderer.js') // 但预加载的 js 文件内仍可以使用 Nodejs 的 API
             }
         })
-
-    // 然后加载应用的 index.html。
-    if (pkg.DEV) {
-        win.loadURL('http://localhost:3000/')
-    } else {
-        win.loadURL(url.format({
+    let startUrl = '';
+    if (process.env.ELECTRON_START_URL) {
+        startUrl = process.env.ELECTRON_START_URL;
+        win.webContents.openDevTools();
+    }
+    else {
+        startUrl = url.format({
             pathname: path.join(__dirname, './build/index.html'),
             protocol: 'file:',
             slashes: true
-        }))
+        });
     }
-
+    win.loadURL(startUrl);
 
     // 当 window 被关闭，这个事件会被触发。
     win.on('closed', () => {
