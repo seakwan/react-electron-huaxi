@@ -1,11 +1,19 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
-const pkg = require('./package.json')
+const anyproxy = require('./anyproxy');
+const store = require('./store');
+const {
+    districtList,
+    dutyDeptList,
+    getRegistDate,
+    getDoctorList,
+    getDoctorDetail,
+    cardList
 
+} = require('./request');
 
-let win
-
+let win;
 function createWindow() {
     // 创建浏览器窗口。
     win = new BrowserWindow(
@@ -14,23 +22,17 @@ function createWindow() {
             height: 600,
         })
     let startUrl = '';
-    // if (process.env.ELECTRON_START_URL) {
-    //     startUrl = process.env.ELECTRON_START_URL;
-    //     win.webContents.openDevTools();
-    // }
-    // else {
-    //     startUrl = url.format({
-    //         pathname: path.join(__dirname, './build/index.html'),
-    //         protocol: 'file:',
-    //         slashes: true
-    //     });
-    // }
-
-    startUrl = url.format({
-        pathname: path.join(__dirname, './public/index.html'),
-        protocol: 'file:',
-        slashes: true
-    });
+    if (process.env.ELECTRON_START_URL) {
+        startUrl = process.env.ELECTRON_START_URL;
+        win.webContents.openDevTools();
+    }
+    else {
+        startUrl = url.format({
+            pathname: path.join(__dirname, './build/index.html'),
+            protocol: 'file:',
+            slashes: true
+        });
+    }
 
     win.loadURL(startUrl);
 
@@ -41,6 +43,20 @@ function createWindow() {
         // 与此同时，你应该删除相应的元素。
         win = null
     })
+
+
+    // setTimeout(() => {
+    //     console.log('cookie');
+    //     win.webContents.send('cookie', 'whoooooooh!');
+    // }, 5000);
+
+    let t = setInterval(() => {
+        if (store.has('cookie')) {
+            win.webContents.send('cookie', store.get('cookie'));
+            clearInterval(t);
+        }
+    }, 1000);
+
 }
 
 // Electron 会在初始化后并准备
@@ -65,5 +81,54 @@ app.on('activate', () => {
     }
 })
 
-  // 在这个文件中，你可以续写应用剩下主进程代码。
-  // 也可以拆分成几个文件，然后用 require 导入。
+const ipc = require('electron').ipcMain
+
+ipc.on('startProxy', (event, arg) => {
+    anyproxy.start();
+    //event.returnValue = 'start';
+})
+
+ipc.on('stopProxy', (event, arg) => {
+    anyproxy.close();
+    //event.returnValue = 'stop';
+})
+
+ipc.on('districtList', (e, a) => {
+    districtList().then(res => {
+        e.returnValue = res;
+    });
+})
+
+ipc.on('dutyDeptList', (e, a) => {
+    dutyDeptList().then(res => {
+        e.returnValue = res;
+    });
+})
+
+ipc.on('getRegistDate', (e, a) => {
+    getRegistDate().then(res => {
+        e.returnValue = res;
+    });
+})
+
+ipc.on('getDoctorList', (e, a) => {
+    const data = JSON.parse(a);
+    const { districtCode, deptId, date } = data;
+    getDoctorList(districtCode, deptId, date).then(res => {
+        e.returnValue = res;
+    });
+})
+
+ipc.on('getDoctorDetail', (e, a) => {
+    const data = JSON.parse(a);
+    const { districtCode, doctorid, date } = data;
+    getDoctorDetail(districtCode, doctorid, date).then(res => {
+        e.returnValue = res;
+    });
+})
+
+ipc.on('cardList', (e, a) => {
+    cardList().then(res => {
+        e.returnValue = res;
+    });
+})

@@ -1,9 +1,9 @@
 
 const superagent = require('superagent');
-
+const store = require('./store');
 require('superagent-proxy')(superagent);
 
-const cookie = 'PHPSESSID=iviosqgn2qrkjpab29c8u58di1';
+//const cookie = 'PHPSESSID=iviosqgn2qrkjpab29c8u58di1';
 
 const header = {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -11,31 +11,40 @@ const header = {
 
 const proxy = 'http://127.0.0.1:8024';
 
+//store.set('cookie', 'PHPSESSID=iviosqgn2qrkjpab29c8u58di1');
+
 async function get(url, data) {
-    let response = await superagent
+    const cookie = store.get('cookie');
+
+    let resp = await superagent
         .get(url)
-        .set('Cookie', cookie);
-    return response.body;
+        .set('Cookie', cookie)
+    // .end((error, res) => {
+    //     console.log(res);
+    // });
+
+    return resp;
 }
 
 async function post(url, data) {
+    const cookie = store.get('cookie');
     let response = await superagent
         .post(url)
         .set('Cookie', cookie)
         .set('Content-Type', header["Content-Type"])
         .send(data)
-        .proxy(proxy);
+    //.proxy(proxy);
     return response.body;
 }
 
 async function districtList() {
     const url = 'http://wx.motherchildren.com/index.php?g=WapApi&m=District&a=districtList';
-    let body = await get(url);
-    return body;
+    return await get(url);
+
 }
 
-async function dutyDeptList() {
-    const url = 'http://wx.motherchildren.com/index.php?g=WapApi&m=Register&a=dutyDeptList&ts=0';
+async function dutyDeptList(districtCode) {
+    const url = 'http://wx.motherchildren.com/index.php?g=WapApi&m=Register&a=dutyDeptList&ts=0&districtCode=' + districtCode;
     let body = await get(url);
     return body;
 }
@@ -71,9 +80,17 @@ async function getDoctorDetail(districtCode, doctorid, date) {
     return body;
 }
 
+async function cardList() {
+    const url = 'http://wx.motherchildren.com/index.php?g=WapApi&m=Card&a=cardList';
+    let body = await get(url);
+    return body;
+}
+
 module.exports = {
     districtList,
     dutyDeptList,
+    getRegistDate,
     getDoctorList,
-    getDoctorDetail
+    getDoctorDetail,
+    cardList,
 }
